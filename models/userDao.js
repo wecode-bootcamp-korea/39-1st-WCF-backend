@@ -16,7 +16,7 @@ const createUser = async (username, password, name, mobile_number, email, addres
         ); 
     } catch (err) {
         const error = new Error ('INVALID_DATA_INPUT');
-        error.statusCode =500;
+        error.statusCode = 400;
         throw error;
     }
 };
@@ -24,7 +24,13 @@ const createUser = async (username, password, name, mobile_number, email, addres
 const getUserByUsername = async (username) => {
 	const [user] = await appDataSource.query(`
 		SELECT 
-            *
+            id,
+            username,
+            password,
+            name,
+            mobile_number,
+            email,
+            address
 		FROM users
 		WHERE username=?`, [username]
 	)

@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const secretKey = process.env.JWT_SECRET_KEY;
 
 const userDao = require("../models/userDao");
-const { validateUsername, validatePw } = require("../utils/validate2")
+const { validateUsername, validatePw } = require("../utils/validate")
 
 
 const signUp = async (username, password, name, mobile_number, email, address) => {
@@ -11,7 +11,6 @@ const signUp = async (username, password, name, mobile_number, email, address) =
     validatePw(password);
 
     const hashedPassword = await bcrypt.hash(password, 12)
-    console.log(hashedPassword)
     const user = await userDao.createUser(
         username,
         hashedPassword,
@@ -20,7 +19,7 @@ const signUp = async (username, password, name, mobile_number, email, address) =
         email, 
         address
     );
-    console.log(user)
+
     return user;
 };
 
@@ -30,9 +29,9 @@ const signIn = async (username, password) => {
 
     const user = await userDao.getUserByUsername(username)
 
-    const match = await bcrypt.compare(password, user.password)
+    const is_match = await bcrypt.compare(password, user.password)
 
-    if (!match) {
+    if (!is_match) {
         return res.status(401).json({ message : "Invalid User" });
     };
 

@@ -8,24 +8,24 @@ const loginRequired = async (req, res, next) => {
 
         if ( !accessToken ) {
             const error = new Error('NEED_ACCESS_TOKEN')
-		    error.statusCode = 401
-		
-		    return res.status(error.statusCode).json({message: error.message})
+            error.statusCode = 401
+            
+            return res.status(error.statusCode).json({message: error.message})
         }
 
-        const decoded = await jwt.verify(accessToken, secretKey);
+        const payLoad = await jwt.verify(accessToken, secretKey);
 
-        const userId = await userDao.getUserById(decoded.id)
+        const userId = await userDao.getUserById(payLoad.id)
 
 
         if (!user) {
-            return res.status(400).json({ message: 'USER_DOES_NOT_EXIST'});
+            return res.status(401).json({ message: 'USER_DOES_NOT_EXIST'});
         }
 
         req.user = user;
         next();
     } catch(err) {
-        return res.status(400).json({ message: "Invalid Access Token"})
+        return res.status(401).json({ message: "Invalid Access Token"})
     }
 };
 
