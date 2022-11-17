@@ -1,24 +1,20 @@
 const { appDataSource } = require("./dataSource")
 
 const createUser = async (username, password, name, mobile_number, email, address) => {
-    try {
-        await appDataSource.query(
-        `INSERT INTO users(
-            username,
-            password,
-            name,
-            mobile_number,
-            email,
-            address
-        ) VALUES (?, ?, ?, ?, ?, ?);
-        `,
-        [ username, password, name, mobile_number, email, address]
-        ); 
-    } catch (err) {
-        const error = new Error ('INVALID_DATA_INPUT');
-        error.statusCode = 400;
-        throw error;
-    }
+
+    await appDataSource.query(
+    `INSERT INTO users(
+        username,
+        password,
+        name,
+        mobile_number,
+        email,
+        address
+    ) VALUES (?, ?, ?, ?, ?, ?);
+    `,
+    [ username, password, name, mobile_number, email, address ]
+    ); 
+
 };
 
 const getUserByUsername = async (username) => {
