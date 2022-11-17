@@ -34,7 +34,25 @@ const signIn = async (req, res) => {
 };
 
 
+const product = async () => {
+    const {result} = req.body;
+
+    try {
+        const{title}=req.body
+        console.log(req.body)
+        if(title){
+            return res.status(200).json({message : "good choice"})
+        }
+        
+    } catch (error) {
+        res.status(error.statusCode || 500).json({ message: error.message})
+    }
+};
+
+
+
 module.exports = {
     signUp, 
-    signIn
+    signIn,
+    product
 }

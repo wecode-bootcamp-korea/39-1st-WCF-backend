@@ -22,5 +22,5 @@ const validatePw = (password) => {
 
 module.exports = {
     validateUsername,
-    validatePw
+    validatePw    
 }

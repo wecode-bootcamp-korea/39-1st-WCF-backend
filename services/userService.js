@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
+const { appDataSource } = require("../models/dataSource");
 const secretKey = process.env.JWT_SECRET_KEY;
 
 const userDao = require("../models/userDao");
@@ -31,7 +32,7 @@ const signIn = async (username, password) => {
     const user = await userDao.getUserByUsername(username)
 
     const match = await bcrypt.compare(password, user.password)
-
+                                                                       n
     if (!match) {
         return res.status(401).json({ message : "Invalid User" });
     };
@@ -42,7 +43,17 @@ const signIn = async (username, password) => {
 }
 
 
+const product = async () => {
+
+
+    const select = userDao.product
+    return select;
+}
+
+
+
 module.exports = {
     signUp,
-    signIn
+    signIn,
+    product
 }
