@@ -48,29 +48,9 @@ const getUserById = async (id) => {
 }
 
 
-const product = async (res) => {
-	const result = await dataSource.query(`
-		SELECT 
-            id,
-			sub_category_id,
-            brand_id,
-			serial_number,
-			title,
-			discount_rate,
-            created_at,
-            updated_at
-		FROM products
-		WHERE id=${id}`,
-        (err,rows)=>{
-            res.status(200).json({data:rows})
-        } 
-	)
 
-	return result
-}
 module.exports = {
     createUser,
     getUserByUsername,
     getUserById,
-    product
 }

@@ -42,18 +42,8 @@ const signIn = async (username, password) => {
     return accessToken;
 }
 
-
-const product = async () => {
-
-
-    const select = userDao.product
-    return select;
-}
-
-
-
 module.exports = {
+    
     signUp,
     signIn,
-    product
 }
