@@ -2,13 +2,15 @@ const { appDataSource } = require("../models/dataSource");
 const cartDao = require('../models/cartDao');
 
 const additionCart = async(userId, productOptionId, quantity) => {
-    const searchCartId = await cartDao.searchCartId(userId, productOptionId);
+    
+    const searchCartId = await cartDao.searchCartId(userId,productOptionId);
     
     if(searchCartId.length==0){
-        return await cartDao.addCart(userId, productOptionId, quantity);
+        return await cartDao.additionCart(userId, productOptionId, quantity);
     }
     else {
-        return await cartDao.sameproductPlusQuantity(searchCartId[0].id, quantity);
+        console.log(searchCartId)
+        return await cartDao.searchCartId(searchCartId[0].id, quantity);
     }
 };
 

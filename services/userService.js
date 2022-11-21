@@ -4,7 +4,7 @@ const { appDataSource } = require("../models/dataSource");
 const secretKey = process.env.JWT_SECRET_KEY;
 
 const userDao = require("../models/userDao");
-const { validateUsername, validatePw } = require("../utils/validate2")
+const { validateUsername, validatePw } = require("../utils/validate")
 
 
 const signUp = async (username, password, name, mobile_number, email, address) => {
@@ -32,7 +32,6 @@ const signIn = async (username, password) => {
     const user = await userDao.getUserByUsername(username)
 
     const match = await bcrypt.compare(password, user.password)
-                                                                       n
     if (!match) {
         return res.status(401).json({ message : "Invalid User" });
     };
@@ -43,7 +42,6 @@ const signIn = async (username, password) => {
 }
 
 module.exports = {
-    
     signUp,
     signIn,
 }

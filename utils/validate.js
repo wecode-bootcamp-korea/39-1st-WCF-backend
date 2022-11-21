@@ -1,8 +1,8 @@
-const validateEmail = (email) => {
-    const emailRegex    =/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/
+const validateUsername = (username) => {
+    const usernameRegex    =/^[a-z]+[a-z0-9]{5,}$/g;
 
-    if (!emailRegex.test(email)) {
-        const error = new Error('INVALID_EMAIL');
+    if (!usernameRegex.test(username)) {
+        const error = new Error('INVALID_USERNAME');
         error.statusCode = 401;
 
         throw error;
@@ -21,6 +21,6 @@ const validatePw = (password) => {
 };
 
 module.exports = {
-    validateEmail,
+    validateUsername,
     validatePw
 }

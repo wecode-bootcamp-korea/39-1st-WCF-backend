@@ -1,43 +1,54 @@
 const { appDataSource } = require('./dataSource');
 
 const additionCart = async (userId, productOptionId, quantity) => {
-    const addCart = await appDataSource.query(`
+    const addCart = await appDataSource.query(
+        `
         INSERT INTO carts(
             user_id,
             product_option_id,
             quantity
         ) values(?,?,?);`,[userId, productOptionId, quantity]
     ) 
-    return addCart;
+    return addCart[0];
 };
 
-const sameproductPlusQuantity = async(searchCartId) => {
+const searchCartId = async(userId, productOptionId) => {
     return await appDataSource.query(
-        `
-        UPDATE carts
-        SET quantity = quantity + 1
-        WHERE id =?;`,
-        [searchCartId]
+        `SELECT
+        id
+        From carts
+        WHERE user_id=? AND product_option_id=?`,
+        [userId,productOptionId]
     )
 };
 
+const plusQuantity = async(searchCartId)=>{
+    return await appDataSource.query(
+        `UPDATE carts
+        SET quantity = quantity +1
+        WHERE id = ?`
+        ,[searchCartId]
+    )
+}
+
 const getByCart = async (userId) => {
     const result = await appDataSource.query(
-        `SELECT
-            carts.id,
-            carts.quantity,
-            product_options.id AS optionId,
-            products.id AS productId,
-            product_optoins.size_id,
-            products.thumbnail,
-            products.title,
-            products.price
-        FROM carts 
-        INNER JOIN product_options ON carts.product_option_id = product_options.id 
-        INNER JOIN sizes ON product_options.size_id=sizes.size 
-        INNER JOIN products ON product_options.product_id = products.id
-        INNER JOIN users ON carts.user_id = users.id
-        WHERE users.id = 1;
+        `SELECT  
+        carts.quantity,
+        product_options.product_id,
+        sizes.size,
+        products.thumbnail,
+        products.title,
+        products.price,
+        products.discount_rate,
+        brands.name
+        From carts
+        LEFT JOIN product_options ON carts.id=product_options.id
+        LEFT JOIN products ON product_options.product_id=products.id
+        LEFT JOIN sizes ON product_options.size_id=sizes.id
+        LEFT JOIN brands ON products.brand_id=brands.id
+        LEFT JOIN users ON carts.user_id=users.id
+        WHERE users.id=?
         `, [userId]
         )     
 
@@ -64,7 +75,8 @@ const allDeleteCart = async(userId) => {
 }
 module.exports = {
     additionCart,
-    sameproductPlusQuantity,
+    searchCartId,
+    plusQuantity,
     getByCart,
     cartQuantityChange,
     allDeleteCart
