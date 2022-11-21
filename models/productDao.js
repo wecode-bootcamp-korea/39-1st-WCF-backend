@@ -45,6 +45,44 @@ const getProductDetail = async (productId) => {
   );
 };
 
+const getProductList = async (whereClause, orderbyClause) => {
+  return await appDataSource.query(
+    `
+        SELECT 
+            sub_categories.name AS subcategory,
+            title,
+            price,
+            brands.name,
+            thumbnail
+        FROM products
+        INNER JOIN brands ON products.brand_id = brands.id
+        INNER JOIN sub_categories ON products.sub_category_id = sub_categories.id
+        INNER JOIN product_options ON products.id = product_options.id
+        ${whereClause}
+        ORDER BY ${orderbyClause}
+        `
+  );
+};
+
+const getBrands = async () => {
+  return await appDataSource.query(`
+    SELECT
+        name
+    FROM brands;
+    `);
+};
+
+const getSizes = async () => {
+  return await appDataSource.query(`
+      SELECT
+          size
+      FROM sizes;
+      `);
+};
+
 module.exports = {
   getProductDetail,
+  getProductList,
+  getBrands,
+  getSizes,
 };
