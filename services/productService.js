@@ -12,14 +12,12 @@ const getProductList = async (params) => {
   const {
     limit = 10,
     offset = 0,
-    sortMethod = "price_DESC",
+    sortMethod = "created_at",
     ...filterOptions
   } = params;
 
   const whereClause = makeProductQueryBuilders(filterOptions);
   const orderbyClause = orderSet[sortMethod];
-
-  console.log(whereClause, orderbyClause);
 
   return await productDao.getProductList(whereClause, orderbyClause);
 };

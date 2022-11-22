@@ -1,6 +1,7 @@
 const orderSet = {
   price_DESC: "price DESC",
   price_ASC: "price ASC",
+  created_at: "created_at DESC",
 };
 
 const brandFilterBuilder = (value) => {

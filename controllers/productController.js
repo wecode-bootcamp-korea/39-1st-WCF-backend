@@ -9,7 +9,6 @@ const getProductDetail = catchAsync(async (req, res) => {
 });
 
 const getProductList = catchAsync(async (req, res) => {
-  console.log(req.query);
   const products = await productService.getProductList(req.query);
 
   return res.status(200).json({ data: products });
