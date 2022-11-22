@@ -15,7 +15,9 @@ const getProductList = catchAsync(async (req, res) => {
 });
 
 const getBrands = catchAsync(async (req, res) => {
-  const brands = await productService.getBrands();
+  const subCategoryId = req.query.subCategoryId;
+  const brands = await productService.getBrands(subCategoryId);
+
   return res.status(200).json({ brands });
 });
 

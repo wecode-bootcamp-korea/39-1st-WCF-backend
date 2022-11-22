@@ -22,8 +22,8 @@ const getProductList = async (params) => {
   return await productDao.getProductList(whereClause, orderbyClause);
 };
 
-const getBrands = async () => {
-  return await productDao.getBrands();
+const getBrands = async (subCategoryId) => {
+  return await productDao.getBrands(subCategoryId);
 };
 
 const getSizes = async () => {
