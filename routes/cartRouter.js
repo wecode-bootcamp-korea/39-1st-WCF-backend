@@ -4,9 +4,9 @@ const router  = express.Router();
 const {loginRequired} = require("../utils/auth")
 const { cartController } = require('../controllers');
 
-router.post('/',loginRequired, cartController.additionCart);
-router.get('/',loginRequired, cartController.getByCart);
-router.patch('/change', loginRequired,cartController.cartQuantityChange);
-router.delete('/all',loginRequired, cartController.allDeleteCart);
-router.delete('/one',loginRequired, cartController.oneDeleteCart);
+router.post('/', cartController.addCart);
+router.get(`/:userId`, cartController.getUserCart);
+router.patch(`/:cartId`, cartController.changeCartQuantity);
+router.delete(``, cartController.deleteALLCart);
+router.delete(`/:userId`, cartController.deleteCart);
 module.exports = router;

@@ -1,6 +1,6 @@
 const { appDataSource } = require('./dataSource');
 
-const additionCart = async (userId, productOptionId, quantity) => {
+const addCart = async (userId, productOptionId, quantity) => {
     const addCart = await appDataSource.query(
         `
         INSERT INTO carts(
@@ -31,17 +31,16 @@ const plusQuantity = async(searchCartId)=>{
     )
 }
 
-const getByCart = async (userId) => {
+const getUserCart = async (userId) => {
     const result = await appDataSource.query(
         `SELECT  
         carts.quantity,
-        product_options.product_id,
+        product_options.product_id as product_id,
         sizes.size,
         products.thumbnail,
         products.title,
         products.price,
-        products.discount_rate,
-        brands.name
+        brands.name as brand 
         From carts
         LEFT JOIN product_options ON carts.id=product_options.id
         LEFT JOIN products ON product_options.product_id=products.id
@@ -55,17 +54,18 @@ const getByCart = async (userId) => {
     return result;
 };
 
-const cartQuantityChange = async (userId, productOptionId, quantity) => {
+const changeCartQuantity = async (productOptionId, quantity) => {
+    const userId = `${cartId}` 
     const result = await appDataSource.query(`
         UPDATE carts
         SET quantity =?
         WHERE user_id =? AND product_option_id =?
-    `, [quantity, userId, productOptionId])
+    `, [quantity, productOptionId])
 
     return result;
 }
 
-const allDeleteCart = async(userId) => {
+const deleteALLCart = async(userId) => {
     const allDeleteCart = await appDataSource.query(`
         DELETE FROM carts c
         WHERE c.user_id =?
@@ -73,11 +73,21 @@ const allDeleteCart = async(userId) => {
     );
     return allDeleteCart;
 }
+
+const deleteCart = async( userId,productOptionId)=>{
+    const oneDeleteCart= await appDataSource.query(
+        `DELETE FROM carts c
+        WHERE c.user_id=? AND c.product_oprion_id=?`
+        ,[userId,productOptionId]
+    )
+    return oneDeleteCart
+}
 module.exports = {
-    additionCart,
+    addCart,
     searchCartId,
     plusQuantity,
-    getByCart,
-    cartQuantityChange,
-    allDeleteCart
+    getUserCart,
+    changeCartQuantity,
+    deleteALLCart,
+    deleteCart
 }

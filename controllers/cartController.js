@@ -1,6 +1,6 @@
 const { cartService } = require('../services')
 
-const additionCart = async(req,res)=>{
+const addCart = async(req,res)=>{
     try{
         const {userId, productOptionId, quantity}= req.body
         console.log(userId)
@@ -9,44 +9,45 @@ const additionCart = async(req,res)=>{
         if(!userId || !productOptionId|| !quantity){
             return res.status(400).json({message: "Invaild Key Error"})
         }
-        const result = await cartService.additionCart(userId, productOptionId, quantity)
-        return res.status(200).json(result)
+        const result = await cartService.addCart(userId, productOptionId, quantity)
+        return res.status(201).json({message: "Success Input Key_Values"})
     }catch (error) {
 
         res.status(error.statusCode || 500).json({ message: error.message})
     }
 };
 
-const getByCart = async (req, res) => {
+const getUserCart = async (req, res) => {
     try{
-        const {userId}=req.body
+        const {userId}=req.params
+        console.log(userId)
         if(!userId) {
             return res.status(400).json({message : "Wrong_userId_error"})
         }
             console.log(req.body)    
-            const getByCart = await cartService.getByCart(req,body);
-            res.status(200).json({getByCart});
+            const getUserCart = await cartService.getUserCart(userId);
+            res.status(200).json({data:getUserCart});
     }catch (error) {
         res.status(error.statusCode || 500).json({ message: error.message})
     }
 };
 
-const cartQuantityChange = async (req, res) => {
+const changeCartQuantity = async (req, res) => {
 
     try{
         const { userId, productOptionId, quantity } = req.body;
         if(!userId || !productOptionId|| !quantity){
-            const error = new Error("quantityPlus Error");
+            const error = new Error("Key Error");
         }
         console.log(req.body)
-        const cartQuantityChange = await cartService.cartQuantityChange(userId, productOptionId, quantity)
-        res.status(200).json({cartQuantityChange});
+        const changeCartQuantity = await cartService.changeCartQuantity(userId, productOptionId, quantity)
+        res.status(200).json({changeCartQuantity});
 }catch(error){
     res.status(error.statusCode||500).json({message: error.message})
 }}
     
 
-const allDeleteCart = async (req, res) => {
+const deleteALLCart = async (req, res) => {
     try{
         const{userId}=req.body;
         if(!userId) {
@@ -60,22 +61,22 @@ const allDeleteCart = async (req, res) => {
     }
     }
 
-const oneDeleteCart = async (req, res) => {
+const deleteCart = async (req, res) => {
     try{const { userId, productOptionId } = req.body;
     if(!userId || !productOptionId) {
         const error = new Error("Something Invalid..")
     }
         console.log(req.body)
-        const oneDeleteCart= await cartService.allDeleteCart(userId, productOptionId)
-        restart.status(200).json({oneDeleteCart})
+        const deleteCart= await cartService.deleteCart(userId, productOptionId)
+        restart.status(200).json({deleteCart})
     }catch(error){
         res.status(error.statusCode||500).json({message:error.message})
     }};
     
 module.exports = {
-    additionCart,
-    getByCart,
-    cartQuantityChange,
-    allDeleteCart,
-    oneDeleteCart
+    addCart,
+    getUserCart,
+    changeCartQuantity,
+    deleteALLCart,
+    deleteCart
     }
