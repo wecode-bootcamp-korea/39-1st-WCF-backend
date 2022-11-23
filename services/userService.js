@@ -47,7 +47,12 @@ const signIn = async (username, password, res) => {
   return accessToken;
 };
 
+const getUserById = async (id) => {
+  return await userDao.getUserById(id);
+};
+
 module.exports = {
   signUp,
   signIn,
+  getUserById,
 };

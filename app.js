@@ -12,7 +12,7 @@ const app = express();
 const { globalErrorHandler } = require("./utils/error");
 
 app.use(cors());
-app.use(morgan("combined"));
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(route);
 

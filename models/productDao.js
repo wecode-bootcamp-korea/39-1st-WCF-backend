@@ -1,4 +1,8 @@
 const { appDataSource } = require("./dataSource");
+const {
+  orderSet,
+  makeProductQueryBuilders,
+} = require("../models/productQueryBuilder");
 
 const getProductDetail = async (productId) => {
   return await appDataSource.query(
@@ -45,6 +49,38 @@ const getProductDetail = async (productId) => {
   );
 };
 
+const getProductList = async (params) => {
+  const {
+    limit = 10,
+    offset = 0,
+    sortMethod = "created_at",
+    ...filterOptions
+  } = params;
+
+  const whereClause = makeProductQueryBuilders(filterOptions);
+  const orderbyClause = orderSet[sortMethod];
+
+  const result = await appDataSource.query(
+    `
+        SELECT 
+            sub_categories.name AS subcategory,
+            products.id AS productId,
+            title,
+            price,
+            brands.name,
+            thumbnail
+        FROM products
+        INNER JOIN brands ON products.brand_id = brands.id
+        INNER JOIN sub_categories ON products.sub_category_id = sub_categories.id
+        INNER JOIN product_options ON products.id = product_options.id
+        ${whereClause}
+        ORDER BY ${orderbyClause}
+        `
+  );
+  return result;
+};
+
 module.exports = {
   getProductDetail,
+  getProductList,
 };
