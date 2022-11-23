@@ -3,64 +3,55 @@ const { catchAsync } = require("../utils/error")
 const {raiseCustomError}= require("../utils/error")
 
 const addCart = catchAsync(async(req,res)=>{
-    const {userId, productOptionId, quantity}= req.body
+    const {productOptionId, quantity}= req.body
+    const userId = req.user.id
 
     const result = await cartService.addCart(userId, productOptionId, quantity)
-    return res.status(201).json({message: "Success Input Key_Values"})
+    return res.status(201).json({message: "Success add cart"})
 
 });
 
 const getUserCart = catchAsync(async (req, res) => {
-    const {userId}=req.params
+    const userId = req.user.id
 
-    if(!userId) 
-    {
-        const error = new Error("userId is not define")
-        error.statusCode=400
-        throw error;
-    }
-       
-    const getUserCart = await cartService.getUserCart(userId);
-    res.status(200).json({data:getUserCart});
+    const userCart = await cartService.getUserCart(userId);
+    res.status(200).json({data:userCart});
 
 });
 
 const changeCartQuantity = catchAsync(async (req, res) => {
-    const { userId, productOptionId, quantity } = req.body;
-        
-    if(!userId || !productOptionId|| !quantity)
+    const { cartId, quantity } = req.body;
+    const userId = req.user.id
+
+    if(!productOptionId|| !quantity)
     {
         const error = new Error("Key Error");
         error.statusCode=400;
         throw error;
     }
 
-    const changeCartQuantity = await cartService.changeCartQuantity(userId, productOptionId, quantity)
+    const changeCartQuantity = await cartService.changeCartQuantity(cartId, userId, quantity)
     res.status(200).json({changeCartQuantity});
 })
     
 const deleteALLCart = catchAsync(async (req, res) => {
-        const{userId}=req.body
-    if(!userId) 
-    {
-        const error = new Error("ALL DELETE ERROR")
-        error.statusCode=400;
-        throw error;
-    }
+    const userId = req.user.id
+
     const allDeleteCart = await cartService.allDeleteCart(userId)
-    res.status(200).json({allDeleteCart})
+    res.status(204)
 })
 
 const deleteCart = catchAsync(async (req, res) => {
-    const { userId, productOptionId } = req.body;
+    const { cartId } = req.params;
+    const userId = req.user.id
 
-    if(!userId || !productOptionId) 
+    if(!cartId) 
     {
-        const error = new Error("Something Invalid..")
+        const error = new Error("cart id is not exist")
         error.statusCode=400;
         throw error;
     }
-    const deleteCart= await cartService.deleteCart(userId, productOptionId)
+    const deleteCart= await cartService.deleteCart(userId, cartId)
     restart.status(200).json({deleteCart})
 });
     

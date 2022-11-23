@@ -15,7 +15,7 @@ const loginRequired = async (req, res, next) => {
 
         const payLoad = await jwt.verify(accessToken, secretKey);
 
-        const userId = await userDao.getUserById(payLoad.id)
+        const user = await userDao.getUserById(payLoad.id)
 
 
         if (!user) {

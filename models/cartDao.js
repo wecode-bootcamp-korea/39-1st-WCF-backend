@@ -54,13 +54,12 @@ const getUserCart = async (userId) => {
     return result;
 };
 
-const changeCartQuantity = async (productOptionId, quantity) => {
-    const userId = `${cartId}` 
+const changeCartQuantity = async (cartId, userId, quantity) => {
     const result = await appDataSource.query(`
         UPDATE carts
-        SET quantity =?
-        WHERE user_id =? AND product_option_id =?
-    `, [quantity, productOptionId])
+        SET quantity = ?
+        WHERE id = ? AND user_id =?
+    `, [quantity, cartId, userId])
 
     return result;
 }
@@ -74,11 +73,11 @@ const deleteALLCart = async(userId) => {
     return allDeleteCart;
 }
 
-const deleteCart = async( userId,productOptionId)=>{
+const deleteCart = async( userId,cartId)=>{
     const oneDeleteCart= await appDataSource.query(
         `DELETE FROM carts c
-        WHERE c.user_id=? AND c.product_oprion_id=?`
-        ,[userId,productOptionId]
+        WHERE c.id = ? AND c.user_id=?`
+        ,[cartId, userId]
     )
     return oneDeleteCart
 }
