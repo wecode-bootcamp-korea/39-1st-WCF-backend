@@ -14,21 +14,7 @@ const getProductList = catchAsync(async (req, res) => {
   return res.status(200).json({ data: products });
 });
 
-const getBrands = catchAsync(async (req, res) => {
-  const subCategoryId = req.query.subCategoryId;
-  const brands = await productService.getBrands(subCategoryId);
-
-  return res.status(200).json({ brands });
-});
-
-const getSizes = catchAsync(async (req, res) => {
-  const sizes = await productService.getSizes();
-  return res.status(200).json({ sizes });
-});
-
 module.exports = {
   getProductDetail,
   getProductList,
-  getBrands,
-  getSizes,
 };

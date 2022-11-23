@@ -64,32 +64,7 @@ const getProductList = async (whereClause, orderbyClause) => {
   );
 };
 
-const getBrands = async (subCategoryId) => {
-  return await appDataSource.query(
-    `
-    SELECT
-    a.id,
-    name
-  FROM brands AS a
-  INNER JOIN products AS b ON b.brand_id = a.id
-  WHERE b.sub_category_id = ?
-  GROUP BY a.id`,
-    [subCategoryId]
-  );
-};
-
-const getSizes = async () => {
-  return await appDataSource.query(`
-    SELECT
-        id,
-        size
-    FROM sizes;
-    `);
-};
-
 module.exports = {
   getProductDetail,
   getProductList,
-  getBrands,
-  getSizes,
 };

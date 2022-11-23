@@ -22,17 +22,7 @@ const getProductList = async (params) => {
   return await productDao.getProductList(whereClause, orderbyClause);
 };
 
-const getBrands = async (subCategoryId) => {
-  return await productDao.getBrands(subCategoryId);
-};
-
-const getSizes = async () => {
-  return await productDao.getSizes();
-};
-
 module.exports = {
   getProductDetail,
   getProductList,
-  getBrands,
-  getSizes,
 };
