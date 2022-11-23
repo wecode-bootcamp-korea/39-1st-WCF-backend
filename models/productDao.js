@@ -50,6 +50,7 @@ const getProductList = async (whereClause, orderbyClause) => {
     `
         SELECT 
             sub_categories.name AS subcategory,
+            products.id AS productId,
             title,
             price,
             brands.name,
