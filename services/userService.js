@@ -30,7 +30,7 @@ const signIn = async (username, password) => {
     validatePw(password)
 
     const user = await userDao.getUserByUsername(username)
-
+    
     const match = await bcrypt.compare(password, user.password)
     if (!match) {
         return res.status(401).json({ message : "Invalid User" });
@@ -40,8 +40,11 @@ const signIn = async (username, password) => {
     const accessToken = jwt.sign(payLoad, secretKey);
     return accessToken;
 }
-
+const getUserById = async (id) => {
+    return await userDao.getUserById(id);
+  };
 module.exports = {
     signUp,
     signIn,
+    getUserById
 }

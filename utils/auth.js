@@ -1,11 +1,12 @@
 const jwt = require("jsonwebtoken")
 const secretKey = process.env.JWT_SECRET_KEY
-const userDao = require("../models/userDao")
+const userService =require ("../services/userService")
+
 
 const loginRequired = async (req, res, next) => {
     try {
         const accessToken = req.headers.authorization
-
+        
         if ( !accessToken ) {
             const error = new Error('NEED_ACCESS_TOKEN')
             error.statusCode = 401
@@ -14,9 +15,11 @@ const loginRequired = async (req, res, next) => {
         }
 
         const payLoad = await jwt.verify(accessToken, secretKey);
-
-        const userId = await userDao.getUserById(payLoad.id)
-
+        
+        
+        const user = await userService.getUserById(payLoad.userId)
+        console.log(user)
+        
 
         if (!user) {
             return res.status(401).json({ message: 'USER_DOES_NOT_EXIST'});

@@ -54,31 +54,21 @@ const getUserCart = async (userId) => {
     return result;
 };
 
-const changeCartQuantity = async (productOptionId, quantity) => {
-    const userId = `${cartId}` 
-    const result = await appDataSource.query(`
-        UPDATE carts
-        SET quantity =?
-        WHERE user_id =? AND product_option_id =?
-    `, [quantity, productOptionId])
+const oneDeleteCart = async( userId, cartId)=>{
+    function filterBuilder(value) {
+     if(cartId.length===1){
+        return `c.product_optionid = ${value}`
+      }else{
+        return `c.product_option_id in (${value})`;
+      }
+    }
 
-    return result;
-}
+    console.log(filterBuilder(cartId))
 
-const deleteALLCart = async(userId) => {
-    const allDeleteCart = await appDataSource.query(`
-        DELETE FROM carts c
-        WHERE c.user_id =?
-    `, [userId]
-    );
-    return allDeleteCart;
-}
-
-const deleteCart = async( userId,productOptionId)=>{
     const oneDeleteCart= await appDataSource.query(
         `DELETE FROM carts c
-        WHERE c.user_id=? AND c.product_oprion_id=?`
-        ,[userId,productOptionId]
+        WHERE c.user_id=? AND ${filterBuilder(cartId)}
+        `,[userId]
     )
     return oneDeleteCart
 }
@@ -87,7 +77,5 @@ module.exports = {
     searchCartId,
     plusQuantity,
     getUserCart,
-    changeCartQuantity,
-    deleteALLCart,
-    deleteCart
+    oneDeleteCart
 }
