@@ -2,7 +2,8 @@
 
 <br />
 
-![](https://velog.velcdn.com/images/sujeong_dev/post/ac371809-c5b6-4612-a186-5c61eb07f90d/image.gif)
+<img width="100%" src= "https://velog.velcdn.com/images/sujeong_dev/post/ac371809-c5b6-4612-a186-5c61eb07f90d/image.gif"/>
+
 <br />
 <br />
 <br />
