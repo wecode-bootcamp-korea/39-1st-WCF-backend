@@ -5,7 +5,6 @@ const userService = require("../services/userService");
 const loginRequired = async (req, res, next) => {
   try {
     const accessToken = req.headers.authorization;
-    console.log(accessToken);
 
     if (!accessToken) {
       const error = new Error("NEED_ACCESS_TOKEN");
@@ -15,7 +14,6 @@ const loginRequired = async (req, res, next) => {
     }
 
     const payLoad = await jwt.verify(accessToken, secretKey);
-
     const user = await userService.getUserById(payLoad.userId);
 
     if (!user) {
@@ -26,6 +24,7 @@ const loginRequired = async (req, res, next) => {
 
     next();
   } catch (err) {
+    console.log(err);
     return res.status(401).json({ message: "Invalid Access Token" });
   }
 };
